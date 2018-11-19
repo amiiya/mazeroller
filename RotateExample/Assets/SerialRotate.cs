@@ -58,9 +58,7 @@ public class SerialRotate : MonoBehaviour {
             Debug.Log("length:"+ message.Length);
             txyz = message.Split('\t');
 
-            //angle and acc of ring
-            
-            
+                 //angle and acc of ring
                 agRing[0] = float.Parse(txyz[0])-calAgRing[0];
                 agRing[1] = float.Parse(txyz[1]) - calAgRing[1];
                 agRing[2] = float.Parse(txyz[2]) - calAgRing[2];
@@ -68,7 +66,7 @@ public class SerialRotate : MonoBehaviour {
                 accRing[1] = float.Parse(txyz[4]) - calAccRing[1];
                 accRing[2] = float.Parse(txyz[5]) - calAccRing[2];
 
-                //angle and acc of wrist
+                //angle and acc of wrist 
                 agWrist[0] = float.Parse(txyz[6])-calAgWrist[0];
                 agWrist[1] = float.Parse(txyz[7]) - calAgWrist[1];
                 agWrist[2] = float.Parse(txyz[8]) - calAgWrist[2];
@@ -78,7 +76,7 @@ public class SerialRotate : MonoBehaviour {
 
                 //lastGyroRate.Set(grx, gry, grz);
 
-                //values of wrist
+                //values of wrist / Handgelenk
                 valuesWristAngle[0].text = "" + Mathf.Round(agWrist[0]);
                 valuesWristAngle[1].text = "" + Mathf.Round(agWrist[1]);
                 valuesWristAngle[2].text = "" + Mathf.Round(agWrist[2]);
@@ -86,7 +84,7 @@ public class SerialRotate : MonoBehaviour {
                 valuesWristAcc[1].text = "" + accWrist[1].ToString("F2");
                 valuesWristAcc[2].text = "" + accWrist[2].ToString("F2");
 
-                //values of ring
+                //values of ring 
                 valuesRingAngle[0].text = "" + Mathf.Round(agRing[0]);
                 valuesRingAngle[1].text = "" + Mathf.Round(agRing[1]);
                 valuesRingAngle[2].text = "" + Mathf.Round(agRing[2]);
@@ -95,9 +93,6 @@ public class SerialRotate : MonoBehaviour {
                 valuesRingAcc[2].text = "" + accRing[2].ToString("F2");
 
                 
-            
-
-
             /*Debug.Log(" 0 Wert" + timestamp);
 			Debug.Log("erster Wert" + grz );
 			Debug.Log("zweiter Wert" + grx);
@@ -142,7 +137,9 @@ public class SerialRotate : MonoBehaviour {
             transform.eulerAngles = rotxyz;
         }
     }
-        // Invoked when a line of data is received from the serial device.
+     
+    
+    // Invoked when a line of data is received from the serial device.
     void OnMessageArrived(string msg)
     {
         Debug.Log( msg);
@@ -186,6 +183,8 @@ public class SerialRotate : MonoBehaviour {
         //}
     }
 
+
+    // when the calibrate button is pressed, set the values to
     public void Calibrate()
     {
         calAgRing[0] = float.Parse(txyz[0]);
@@ -202,7 +201,5 @@ public class SerialRotate : MonoBehaviour {
         calAccWrist[0] = float.Parse(txyz[9]);
         calAccWrist[1] = float.Parse(txyz[10]);
         calAccWrist[2] = float.Parse(txyz[11]);
-
-        
     }
 }

@@ -22,15 +22,16 @@ public class Board : MonoBehaviour
     {
         if (isCalibrated)
         {
-            // Smoothly tilts a transform towards a target rotation.
+            // Rotation for the Ring
+            
             //float tiltAroundZ = serialrotate.getRotationRing()[1] * tiltAngle;
             //float tiltAroundX = serialrotate.getRotationRing()[0] * tiltAngle;
 
-            //// Smoothly tilts a transform towards a target rotation.
-            float tiltAroundZ = serialrotate.getRotationWrist()[1] * tiltAngle;
-            float tiltAroundX = serialrotate.getRotationWrist()[0] * tiltAngle;
+            //// Rotation of the Wrist
+           float tiltAroundZ = serialrotate.getRotationWrist()[1] * tiltAngle;
+           float tiltAroundX = serialrotate.getRotationWrist()[0] * tiltAngle;
 
-            // Hier soll die Berechnung mithilfedes Kalman Fehlers stattfinden.
+            // Hier soll die Berechnung mithilfedes Kalman Filters stattfinden.
 
             Rotation(tiltAroundX, tiltAroundZ);
         }
