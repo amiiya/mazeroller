@@ -1,4 +1,6 @@
-﻿namespace Kalman
+﻿using UnityEngine;
+
+namespace Kalman
 {
     public sealed class KalmanFilter
     {
@@ -40,12 +42,15 @@
 			X0 = F * State;
 			P0 = F * Covariance * F.Transpose () + Q;
 
-			// Correct
-			//var k = P0 * H.Transpose() * (H * P0 * H.Transpose() + R).Inverse(); // kalman gain
+            // Correct
+            //var k = P0 * H.Transpose() * (H * P0 * H.Transpose() + R).Inverse(); // kalman gain
+            
 			var k = P0 * H.Transpose () * (H * P0 * H.Transpose () + R).Invert (); // kalman gain
-			State = X0 + (k * (z - (H * X0)));
-			//Covariance = (Matrix.Identity (P0.RowCount) - k * H) * P0;
-			Covariance = (Matrix.IdentityMatrix (P0.rows) - k * H) * P0;
+            
+            State = X0 + (k * (z - (H * X0)));
+            
+            //Covariance = (Matrix.Identity (P0.RowCount) - k * H) * P0;
+            Covariance = (Matrix.IdentityMatrix (P0.rows) - k * H) * P0;
 		}
     }
 }

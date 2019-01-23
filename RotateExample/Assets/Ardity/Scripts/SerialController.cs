@@ -125,7 +125,9 @@ public class SerialController : MonoBehaviour
             else if (ReferenceEquals(message, SERIAL_DEVICE_DISCONNECTED))
                 listener.SendMessage("OnConnectionEvent", false);
             else
+            {
                 listener.SendMessage("OnMessageArrived", message);
+            }
         }
     }
 

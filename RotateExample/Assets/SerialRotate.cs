@@ -13,10 +13,11 @@ public class SerialRotate : MonoBehaviour {
     public Text[] valuesWristAngle,valuesWristAcc, valuesRingAngle,valuesRingAcc;
 
     private string[] oldtxyz;
-    private float[] calAgWrist,calAccWrist,calAgRing,calAccRing;
+    private float[] calAgWrist,calAccWrist,calAgRing,calAccRing, angleAccRing, angleAccWrist;
     private float[] agWrist, accWrist, agRing, accRing;
     private bool isCalibrated;
     private string[] txyz = new string[12];
+    
 
     // Use this for initialization
     void Start()
@@ -29,6 +30,9 @@ public class SerialRotate : MonoBehaviour {
         calAccWrist = new float[3];
         agWrist = new float[3];
         accWrist = new float[3];
+        angleAccRing = new float[3];
+        angleAccWrist = new float[3];
+
         agRing = new float[3];
         accRing = new float[3];
         for (int i=0;i<oldtxyz.Length;i++)
@@ -37,7 +41,7 @@ public class SerialRotate : MonoBehaviour {
         }
     }
 
-    void processMessage(string message)
+    public void processMessage(string message)
     {
 
  		//if (message.StartsWith("D.ypr:"))
@@ -62,9 +66,15 @@ public class SerialRotate : MonoBehaviour {
                 agRing[0] = float.Parse(txyz[0])-calAgRing[0];
                 agRing[1] = float.Parse(txyz[1]) - calAgRing[1];
                 agRing[2] = float.Parse(txyz[2]) - calAgRing[2];
-                accRing[0] = float.Parse(txyz[3])-calAccRing[0];
+
+                accRing[0] = float.Parse(txyz[3]) - calAccRing[0];
                 accRing[1] = float.Parse(txyz[4]) - calAccRing[1];
                 accRing[2] = float.Parse(txyz[5]) - calAccRing[2];
+
+                angleAccRing[0] = -Mathf.Atan2(accRing[2], accRing[1]) * 180 / Mathf.PI;
+                angleAccRing[1] = 0;
+                angleAccRing[2] = -90 + Mathf.Atan2(accRing[1], accRing[0]);
+
 
                 //angle and acc of wrist 
                 agWrist[0] = float.Parse(txyz[6])-calAgWrist[0];
@@ -74,9 +84,13 @@ public class SerialRotate : MonoBehaviour {
                 accWrist[1] = float.Parse(txyz[10]) - calAccWrist[1];
                 accWrist[2] = float.Parse(txyz[11]) - calAccWrist[2];
 
+                angleAccWrist[0] = -Mathf.Atan2(accRing[2], accRing[1]) * 180 / Mathf.PI;
+                angleAccWrist[1] = 0;
+                angleAccWrist[2] = -90 + Mathf.Atan2(accRing[1], accRing[0]);
+
                 //lastGyroRate.Set(grx, gry, grz);
 
-                //values of wrist / Handgelenk
+            //values of wrist / Handgelenk
                 valuesWristAngle[0].text = "" + Mathf.Round(agWrist[0]);
                 valuesWristAngle[1].text = "" + Mathf.Round(agWrist[1]);
                 valuesWristAngle[2].text = "" + Mathf.Round(agWrist[2]);
@@ -139,12 +153,6 @@ public class SerialRotate : MonoBehaviour {
     }
      
     
-    // Invoked when a line of data is received from the serial device.
-    void OnMessageArrived(string msg)
-    {
-        Debug.Log( msg);
-        processMessage(msg);
-    }
 
     // Invoked when a connect/disconnect event occurs. The parameter 'success'
     // will be 'true' upon connection, and 'false' upon disconnection or
@@ -159,12 +167,20 @@ public class SerialRotate : MonoBehaviour {
 
     public float[] getRotationRing()
     {
-        return accRing;
+        return angleAccRing;
     }
 
     public float[] getRotationWrist()
     {
-        return accWrist;
+        return angleAccWrist;
+    }
+
+    public float[] getGyroRing() {
+        return agRing;
+    }
+
+    public float[] getGyrosWrist() {
+        return agWrist;
     }
 
     void Update () {
@@ -172,14 +188,14 @@ public class SerialRotate : MonoBehaviour {
 
         //while (true)
         //{
-        //    message = serialController.ReadSerialMessage();
+        //    message = serialcontroller.readserialmessage();
         //    if (message == null)
         //        break;
-        //    if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
+        //    if (referenceequals(message, serialcontroller.serial_device_connected))
         //        continue;
-        //    else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
+        //    else if (referenceequals(message, serialcontroller.serial_device_disconnected))
         //        continue;
-        //    processMessage(message);
+        //    processmessage(message);
         //}
     }
 
@@ -187,11 +203,18 @@ public class SerialRotate : MonoBehaviour {
     // when the calibrate button is pressed, set the values to
     public void Calibrate()
     {
+        Debug.Log(txyz);
+        Debug.Log(float.Parse(txyz[0]));
         calAgRing[0] = float.Parse(txyz[0]);
+        Debug.Log("2");
         calAgRing[1] = float.Parse(txyz[1]);
+        Debug.Log("3");
         calAgRing[2] = float.Parse(txyz[2]);
+        Debug.Log("4");
         calAccRing[0] = float.Parse(txyz[3]);
+        Debug.Log("5");
         calAccRing[1] = float.Parse(txyz[4]);
+        Debug.Log("6");
         calAccRing[2] = float.Parse(txyz[5]);
 
         //angle and acc of wrist

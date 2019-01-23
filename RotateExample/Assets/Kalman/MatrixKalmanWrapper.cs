@@ -10,6 +10,7 @@ namespace Kalman {
 		private KalmanFilter kX;
 		private KalmanFilter kY;
 		private KalmanFilter kZ;
+        
 		
 		public MatrixKalmanWrapper ()
 		{
@@ -24,23 +25,32 @@ namespace Kalman {
 			H : factor of measured value to real value
 			R : environment noise
 			*/
-			var f = new Matrix (new[,] {{1.0, 1}, {0, 1.0}});
+            var ts = 0.033;
+			var f = new Matrix (new[,] {{1.0, ts,0}, {0, 1,0},{ 0,0,1} });
 			var b = new Matrix (new[,] {{0.0}, {0}});
 			var u = new Matrix (new[,] {{0.0}, {0}});
-			var r = Matrix.CreateVector (10);
-			var q = new Matrix (new[,] {{0.01, 0.4}, {0.1, 0.02}});
-			var h = new Matrix (new[,] {{1.0 , 0}});
-			
-			kX = makeKalmanFilter (f, b, u, q, h, r);
+			//var r = Matrix.CreateVector (10);
+			//var q = new Matrix (new[,] {{0.01, 0.4}, {0.1, 0.02}});
+			var h = new Matrix (new[,] {{1.0 , 0,0},{ 1,0,0},{0,1,-1},{ 0,1,-1}});
+            var r = new Matrix(new[,] { { 1.0, 0, 0,0 }, { 0, 1, 0,0 }, { 0, 0, 1,0 },{ 0,0,0,1} });
+
+            var gd = new Matrix(new[,] { { 1/2*Mathf.Pow((float)ts,2),0}, { ts, 0}, { 0,ts }});
+            var q_raw = new Matrix (new[,] {{100, 0}, {0,10.0}});
+
+            var q = gd * q_raw * gd.Transpose();
+
+            kX = makeKalmanFilter (f, b, u, q, h, r);
 			kY = makeKalmanFilter (f, b, u, q, h, r);
 			kZ = makeKalmanFilter (f, b, u, q, h, r);
 		}
 		
-		public Vector3 Update (Vector3 current)
+		public Vector3 Update (Vector4 current_phi, Vector4 current_gyro)
 		{
-			kX.Correct (new Matrix (new double[,] {{current.x}}));
-			kY.Correct (new Matrix (new double[,] {{current.y}}));
-			kZ.Correct (new Matrix (new double[,] {{current.z}}));
+			kX.Correct (new Matrix (new double[,] { { current_phi.w }, { current_phi.x },{ current_gyro.w},{ current_gyro.x} }));
+			kY.Correct (new Matrix (new double[,] {{current_phi.y},{ current_phi.z},{current_gyro.y },{current_gyro.z } }));
+
+
+			//kZ.Correct (new Matrix (new double[,] {{current.z}}));
 			
 			// rashod
 			// kX.State [1,0];
@@ -73,8 +83,8 @@ namespace Kalman {
 			);
 			// set initial value
 			filter.SetState (
-				Matrix.CreateVector (500, 0), 
-				new Matrix (new [,] {{10.0, 0}, {0, 5.0}})
+				Matrix.CreateVector (0,0, 0), 
+				new Matrix (new [,] {{100.0, 0,0}, {0, 100.0,0},{0,0,100} })
 			);
 			return filter;
 		}

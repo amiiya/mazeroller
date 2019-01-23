@@ -61,8 +61,13 @@ namespace Kalman {
 			filter.SetState (500,5.0);
 			return filter;
 		}
-		#endregion
-		
-		
-	}
+
+        public Vector3 Update(Vector4 current_phi, Vector4 current_gyro)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
+
+
+    }
 }

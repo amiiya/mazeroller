@@ -747,7 +747,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0855909aadcc84b4780e6301daab3649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smooth: 5
+  smooth: 0.25
+  filteredRotation: {x: 0, y: 0, z: 0}
+  current_phi: {x: 0, y: 0, z: 0, w: 0}
+  current_gyro: {x: 0, y: 0, z: 0, w: 0}
 --- !u!54 &295249632
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2306,7 +2309,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
       propertyPath: portName
-      value: COM3
+      value: COM5
       objectReference: {fileID: 0}
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
       propertyPath: baudRate
