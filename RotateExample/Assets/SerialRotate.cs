@@ -59,7 +59,7 @@ public class SerialRotate : MonoBehaviour {
         if (message.StartsWith(""))
         {
             ///message = message.Substring(10);
-            Debug.Log("length:"+ message.Length);
+            //Debug.Log("length:"+ message.Length);
             txyz = message.Split('\t');
 
                  //angle and acc of ring
@@ -90,7 +90,9 @@ public class SerialRotate : MonoBehaviour {
 
                 //lastGyroRate.Set(grx, gry, grz);
 
-            //values of wrist / Handgelenk
+
+            //##############Ausgabe der Sensor Daten in Unity##########
+                //values of wrist / Handgelenk
                 valuesWristAngle[0].text = "" + Mathf.Round(agWrist[0]);
                 valuesWristAngle[1].text = "" + Mathf.Round(agWrist[1]);
                 valuesWristAngle[2].text = "" + Mathf.Round(agWrist[2]);
@@ -105,7 +107,6 @@ public class SerialRotate : MonoBehaviour {
                 valuesRingAcc[0].text = "" + accRing[0].ToString("F2");
                 valuesRingAcc[1].text = "" + accRing[1].ToString("F2");
                 valuesRingAcc[2].text = "" + accRing[2].ToString("F2");
-
                 
             /*Debug.Log(" 0 Wert" + timestamp);
 			Debug.Log("erster Wert" + grz );
@@ -114,6 +115,7 @@ public class SerialRotate : MonoBehaviour {
 
         }
 
+        // Sobald die Daten vom Sensor gesendet werden
         if (message.StartsWith("D.a.txyz:"))
         {
             message = message.Substring(9);
@@ -203,18 +205,18 @@ public class SerialRotate : MonoBehaviour {
     // when the calibrate button is pressed, set the values to
     public void Calibrate()
     {
-        Debug.Log(txyz);
-        Debug.Log(float.Parse(txyz[0]));
+        //Debug.Log(txyz);
+        //Debug.Log(float.Parse(txyz[0]));
         calAgRing[0] = float.Parse(txyz[0]);
-        Debug.Log("2");
+        //Debug.Log("2");
         calAgRing[1] = float.Parse(txyz[1]);
-        Debug.Log("3");
+        //Debug.Log("3");
         calAgRing[2] = float.Parse(txyz[2]);
-        Debug.Log("4");
+        //Debug.Log("4");
         calAccRing[0] = float.Parse(txyz[3]);
-        Debug.Log("5");
+        //Debug.Log("5");
         calAccRing[1] = float.Parse(txyz[4]);
-        Debug.Log("6");
+        //Debug.Log("6");
         calAccRing[2] = float.Parse(txyz[5]);
 
         //angle and acc of wrist
