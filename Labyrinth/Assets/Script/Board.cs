@@ -13,6 +13,8 @@ public class Board : MonoBehaviour
     public Vector3 filteredRotation;
     public Vector4 current_phi;
     public Vector4 current_gyro;
+    public float total_x;
+    public float total_z;
 
     // Use this for initialization
     void Start()
@@ -78,7 +80,10 @@ public class Board : MonoBehaviour
     }
 
     public void Rotation( float tiltAroundX, float tiltAroundZ) {
-        Quaternion target = Quaternion.Euler(tiltAroundX * smooth, 0, tiltAroundZ * smooth);
+        total_x = total_x + tiltAroundX;
+        total_z = total_z + tiltAroundZ;
+        // Quaternion target = Quaternion.Euler(total_x * smooth, 0, total_z * smooth * 4);{
+        Quaternion target = Quaternion.Euler(tiltAroundX * smooth, 0, tiltAroundZ * smooth * 2);
 
         // Dampen towards the target rotation
 
@@ -97,7 +102,7 @@ public class Board : MonoBehaviour
     // Invoked when a line of data is received from the serial device.
     public void OnMessageArrived(string msg)
     {
-        Debug.Log("message arrived");
+        // Debug.Log("message arrived");
 
         // Debug.Log( msg);
         serialrotate.processMessage(msg);
