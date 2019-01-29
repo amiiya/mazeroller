@@ -79,11 +79,14 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void Rotation( float tiltAroundX, float tiltAroundZ) {
-        total_x = total_x + tiltAroundX;
-        total_z = total_z + tiltAroundZ;
-        // Quaternion target = Quaternion.Euler(total_x * smooth, 0, total_z * smooth * 4);{
-        Quaternion target = Quaternion.Euler(tiltAroundX * smooth, 0, tiltAroundZ * smooth * 2);
+    public void Rotation( float tiltAroundX, float tiltAroundZ)
+    {
+        Debug.Log("Incoming: " + tiltAroundX + " & " + tiltAroundZ);
+        Debug.Log("Computed: " + (tiltAroundX > 2 || tiltAroundX < -2 ? tiltAroundX : 0) + " & " + (tiltAroundZ > 1 || tiltAroundZ < -1 ? tiltAroundZ : 0));
+        total_x = total_x + (tiltAroundX > 2 || tiltAroundX < -2 ? tiltAroundX : 0);
+        total_z = total_z + (tiltAroundZ > 1 || tiltAroundZ < -1 ? tiltAroundZ : 0);
+        Quaternion target = Quaternion.Euler(total_x * smooth, 0, total_z * smooth);
+        // Quaternion target = Quaternion.Euler(tiltAroundX * smooth, 0, tiltAroundZ * smooth * 2);
 
         // Dampen towards the target rotation
 
