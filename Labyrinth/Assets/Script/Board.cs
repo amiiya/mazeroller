@@ -81,10 +81,12 @@ public class Board : MonoBehaviour
 
     public void Rotation( float tiltAroundX, float tiltAroundZ)
     {
+        int x_offset = 5;
+        int y_offset = 5;
         Debug.Log("Incoming: " + tiltAroundX + " & " + tiltAroundZ);
         Debug.Log("Computed: " + (tiltAroundX > 2 || tiltAroundX < -2 ? tiltAroundX : 0) + " & " + (tiltAroundZ > 1 || tiltAroundZ < -1 ? tiltAroundZ : 0));
-        total_x = total_x + (tiltAroundX > 2 || tiltAroundX < -2 ? tiltAroundX : 0);
-        total_z = total_z + (tiltAroundZ > 1 || tiltAroundZ < -1 ? tiltAroundZ : 0);
+        total_x = total_x + (tiltAroundX > x_offset || tiltAroundX < -x_offset ? tiltAroundX : 0);
+        total_z = total_z + (tiltAroundZ > y_offset || tiltAroundZ < -y_offset ? tiltAroundZ : 0);
         Quaternion target = Quaternion.Euler(total_x * smooth, 0, total_z * smooth);
         // Quaternion target = Quaternion.Euler(tiltAroundX * smooth, 0, tiltAroundZ * smooth * 2);
 
